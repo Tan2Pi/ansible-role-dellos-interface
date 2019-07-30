@@ -96,7 +96,7 @@ interface {{ interface_key }}
     {% if intf_vars.channel_mode is defined %}
       {% if intf_vars.channel_mode == 'active' %}
  channel-group {{ intf_vars.channel_group }} mode active
-      {% else %}
+      {% elif intf_vars.channel_mode == 'static' %}
  channel-group {{ intf_vars.channel_group }} mode on
       {% endif %}
     {% endif %}
