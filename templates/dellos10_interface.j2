@@ -24,7 +24,7 @@ dellos_interface:
             fanout: 10g-4x
     range ethernet 1/1/1-1/1/4:
             switchport: True
-            admin: down 
+            admin: down
 
 #####################################################}
 {% if dellos_interface is defined and dellos_interface %}
@@ -38,6 +38,8 @@ interface breakout {{ port[1] }} map {{ intf_vars.fanout }}
     {% else %}
 no interface breakout {{ port[1] }}
     {% endif %}
+  {% elif port[0] == 'port-channel' %}
+interface {{ key }}
   {% endif %}
 {% endfor %}
 {% for key in dellos_interface.keys() %}
@@ -47,7 +49,7 @@ no interface breakout {{ port[1] }}
   {% if (intf_vars.fanout is defined and not intf_vars.fanout) or (intf_vars.fanout is not defined) %}
     {% if key.startswith('range')%}
        {% set interface_key = port[0] + " " + port[1] + port[2] %}
-    {% else %} 
+    {% else %}
        {% set interface_key = port[0] + port[1] %}
     {% endif %}
 interface {{ interface_key }}
@@ -55,7 +57,7 @@ interface {{ interface_key }}
     {% if intf_vars.desc %}
        {% if intf_vars.desc|wordcount > 1 %}
  description "{{ intf_vars.desc }}"
-       {% else %} 
+       {% else %}
  description {{ intf_vars.desc }}
        {% endif %}
     {% else %}
@@ -90,9 +92,42 @@ interface {{ interface_key }}
  no mtu
     {% endif %}
   {% endif %}
- 
+  {% if intf_vars.channel_group is defined and intf_vars.channel_group %}
+    {% if intf_vars.channel_mode is defined %}
+      {% if intf_vars.channel_mode == 'active' %}
+ channel-group {{ intf_vars.channel_group }} mode active
+      {% else %}
+ channel-group {{ intf_vars.channel_group }} mode on
+      {% endif %}
+    {% endif %}
+  {% endif %}
+
+  {% if intf_vars.flow_control_receive is defined %}
+    {% if intf_vars.flow_control_receive %}
+ flowcontrol receive on
+    {% else %}
+ flowcontrol receive off
+    {% endif %}
+  {% endif %}
+  {% if intf_vars.flow_control_transmit is defined %}
+     {% if intf_vars.flow_control_transmit %}
+ flowcontrol transmit on
+     {% else %}
+ flowcontrol transmit off
+     {% endif %}
+  {% endif %}
+
+  {% if intf_vars.rstp is defined and intf_vars.rstp != 'none' %}
+ lacp fallback enable
+ spanning-tree port type edge
+  {% endif %}
+
+  {% if intf_vars.lacp_fallback_priority is defined and intf_vars.lacp_fallback_priority %}
+ lacp port-priority {{ intf_vars.lacp_fallback_priority }}
+  {% endif %}
+
   {% if intf_vars.ip_type_dynamic is defined %}
-    {% if intf_vars.ip_type_dynamic %} 
+    {% if intf_vars.ip_type_dynamic %}
  ip address dhcp
     {% else %}
  no ip address
@@ -106,7 +141,7 @@ interface {{ interface_key }}
       {% endif %}
     {% endif %}
   {% endif %}
- 
+
    {% if intf_vars.suppress_ra is defined %}
     {% if intf_vars.suppress_ra == "present" %}
  no ipv6 nd send-ra
