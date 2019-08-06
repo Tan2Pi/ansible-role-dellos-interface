@@ -32,8 +32,6 @@ Role variables
 | ``desc``  | string         | Configures a single line interface description  | dellos6, dellos9, dellos10 |
 | ``portmode`` | string | Configures port-mode according to the device type | dellos6 (access and trunk), dellos9 (hybrid), dellos10  |
 | ``switchport`` | boolean: true,false\*  | Configures an interface in L2 mode |  dellos9, dellos10 |
-| ``channel_group`` | integer | Adds physical port to port-channel | dellos10 |
-| ``channel_mode`` | string: active, static | Sets the mode for each physical port being attached to a port-channel | dellos10 |
 | ``admin``      | string: up,down\*              | Configures the administrative state for the interface; configuring the value as administratively "up" enables the interface; configuring the value as administratively "down" disables the interface | dellos6, dellos9, dellos10 |
 | ``mtu``        | integer                       | Configures the MTU size for L2 and L3 interfaces; example, MTU range is 594 to 12000 for dellos9 devices, 1280 to 65535 on dellos10 devices, and set globally on dellos6 devices | dellos9, dellos10 |
 | ``flow_control_receive`` | boolean: true, false | Turns flowcontrol receive on or off | dellos10 |
