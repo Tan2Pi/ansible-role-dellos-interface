@@ -36,7 +36,6 @@ Role variables
 | ``mtu``        | integer                       | Configures the MTU size for L2 and L3 interfaces; example, MTU range is 594 to 12000 for dellos9 devices, 1280 to 65535 on dellos10 devices, and set globally on dellos6 devices | dellos9, dellos10 |
 | ``flow_control_receive`` | boolean: true, false | Turns flowcontrol receive on or off | dellos10 |
 | ``flow_control_transmit`` | boolean: true, false | Turns flowcontrol transmit on or off | dellos10 |
-| ``rstp`` | string: rstp, none | Sets port type to edge and turns on lacp fallback | dellos10 |
 | ``fanout``     | string:dual, single, quad (dellos9); string:10g-4x, 40g-1x, 25g-4x, 100g-1x, 50g-2x (dellos10)   | Configures fanout to the appropriate value in dellos* devices.| dellos9, dellos10 |
 | ``fanout_speed`` | string: 10G, 25G, 40G, 50G | Configures speed for the fanout port based on the fanout mode specified | dellos9 |
 | ``fanout_state`` | string: present, absent* | Configures the fanout mode to a port if state is set to present | dellos9 |
