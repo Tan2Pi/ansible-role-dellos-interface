@@ -38,8 +38,6 @@ interface breakout {{ port[1] }} map {{ intf_vars.fanout }}
     {% else %}
 no interface breakout {{ port[1] }}
     {% endif %}
-  {% elif port[0] == 'port-channel' %}
-interface {{ key }}
   {% endif %}
 {% endfor %}
 {% for key in dellos_interface.keys() %}
@@ -92,15 +90,6 @@ interface {{ interface_key }}
  no mtu
     {% endif %}
   {% endif %}
-  {% if intf_vars.channel_group is defined and intf_vars.channel_group %}
-    {% if intf_vars.channel_mode is defined %}
-      {% if intf_vars.channel_mode == 'active' %}
- channel-group {{ intf_vars.channel_group }} mode active
-      {% elif intf_vars.channel_mode == 'static' %}
- channel-group {{ intf_vars.channel_group }} mode on
-      {% endif %}
-    {% endif %}
-  {% endif %}
 
   {% if intf_vars.flow_control_receive is defined %}
     {% if intf_vars.flow_control_receive %}
@@ -120,10 +109,6 @@ interface {{ interface_key }}
   {% if intf_vars.rstp is defined and intf_vars.rstp != 'none' %}
  lacp fallback enable
  spanning-tree port type edge
-  {% endif %}
-
-  {% if intf_vars.lacp_fallback_priority is defined and intf_vars.lacp_fallback_priority %}
- lacp port-priority {{ intf_vars.lacp_fallback_priority }}
   {% endif %}
 
   {% if intf_vars.ip_type_dynamic is defined %}
