@@ -106,11 +106,6 @@ interface {{ interface_key }}
      {% endif %}
   {% endif %}
 
-  {% if intf_vars.rstp is defined and intf_vars.rstp != 'none' %}
- lacp fallback enable
- spanning-tree port type edge
-  {% endif %}
-
   {% if intf_vars.ip_type_dynamic is defined %}
     {% if intf_vars.ip_type_dynamic %}
  ip address dhcp
